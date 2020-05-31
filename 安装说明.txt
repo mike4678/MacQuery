@@ -1,0 +1,3 @@
+1.导入mac.sql文件到数据库中
+2.修改kernl目录下的conf.php文件中的参数
+Enjoy！

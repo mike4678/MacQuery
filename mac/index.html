@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width,inital-scale=1,maximum-scale=1,user-scalable=no;" /> 
+<title>{top}</title>
+</head>
+<link href="../css/css.css" rel="stylesheet" type="text/css" />
+<link href="../css/glass1.css" rel="stylesheet" type="text/css" />
+<script src="../js/global.js"></script>
+<script src="../js/jquery-1.8.3.min.js"></script>
+<script src="../js/artDialog.js?skin=default"></script>	
+<script src="../js/iframeTools.js"></script>
+<body class="bg">
+<!--顶部开始-->
+<div id="top_top">
+  <div class="logBox" style="position:fixed;_position:ablolute">
+    <div class="login"> 
+      <table width="100%" border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td align="left" style="color: #FFF"></td>
+          <td align="center" style="color: #FFF">{corp}MAC地址在线查询系统</td>
+		  <td align="right" style="color: #FFF"><a href="#" onclick="javascript:SystemBox(2, '/mac/about.php',null,'关于',150,500)">About</td>	
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<!--顶部结束-->
+<!--搜索主体-->
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr>
+    <td width="36%" height="105">&nbsp;</td>
+    <td width="32%">&nbsp;</td>
+    <td width="32%">&nbsp;</td>
+  </tr>
+  <tr>
+    <td colspan="3"><img src="{logo}"  alt="" width="297" height="142" class="logo"/></td>
+  </tr>
+  <tr>
+    <td colspan="3"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+      <div id="login_boder" >
+        <td height="45" align="center" valign="top">
+          <input name="search" type="text" class="input" id="search" size="55" maxlength="35" />
+          <input name="button" type="submit" class="submit" id="button" value="搜一下" />
+</td>
+        </div>	
+    </table></td>
+  </tr>
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+</table>
+
+	<div id="glass" class="glass" style="margin:0 auto;border:0px solid #000;width:400px;height:200px;display:none">
+	</br> <div id="USERMAC" style="margin-left: 20px;" > </div>
+	</br> <div id="MACqianzui" style="margin-left: 20px;"> </div>
+	</br> <div id="REGKEYWORD" style="margin-left: 20px;"> </div>
+	</div> 
+<!--底部开始-->
+<div id="bottom_top">
+<div class="CorpBox" style="position:fixed;_position:ablolute">
+<div class="Corp"><strong align="center">{bottom}</strong></div>
+<!--底部结束-->
+  </div>
+</div>
+</body>
+</html>
+<script>
+$("#login_boder").bind("keydown", function(e) {
+    var theEvent = e || window.event;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+    if (code == 13) {
+        $(".submit").click()
+    }
+});
+$(function() {
+    $(".submit").on('click', function(event) {
+        event.preventDefault();
+        var search = $('#search').val();
+        if (search == '') {
+            SystemBox(3, '待搜索的内容为空！');
+            return false
+        }
+        $.ajax({
+            url: 'search.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                searchdata: search
+            },
+            beforeSend: function() {
+                $('#button').attr("value", '正在搜索...')
+            },
+            success: function(res) {
+                var errcode = res.status;
+                var errmessage = res.message;
+                if (res.status == 0) {
+					$("#USERMAC").text(" 查询MAC地址：" + res.mac)
+					$("#MACqianzui").text(" MAC地址前缀：" + res.mac_q)
+					$("#REGKEYWORD").text(" 注册公司：" + res.regcompy)
+					//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+					$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block')
+					$('#button').attr("value", '搜一下')					
+                } else {
+					SystemBox(3, errmessage);
+                    $('#button').attr("value", '搜一下')
+                }
+            }
+        })
+    })
+});	
+</script>
