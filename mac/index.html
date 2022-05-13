@@ -112,4 +112,28 @@ $(function() {
         })
     })
 });	
+</script>     var errmessage = res.message;
+                if (res.status == 0) {
+					$("#USERMAC").text(" 查询MAC地址：" + res.mac)
+					$("#MACqianzui").text(" MAC地址前缀：" + res.mac_q)
+					$("#REGKEYWORD").text(" 注册公司：" + res.regcompy)
+					//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+					$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block')
+					$('#button').attr("value", '搜一下')					
+                } else if(res.status == 1) {
+					$("#USERMAC").text(" 启始IP：" + res.Data.beginIP)
+					$("#MACqianzui").text(" 结束IP：" + res.Data.endIP)
+					$("#REGKEYWORD").text(" 归属地：" + res.Data.dataA + res.Data.dataB)
+					//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+					$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block')
+					$('#button').attr("value", '搜一下')	
+
+                } else {
+					SystemBox(3, errmessage);
+                    $('#button').attr("value", '搜一下')
+				}
+            }
+        })
+    })
+});	
 </script>

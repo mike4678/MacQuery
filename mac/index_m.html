@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>{corp} MAC/ip地址在线查询系统</title>
+<link href="../css/index_mobile.css" rel="stylesheet" type="text/css" />
+<style type="text/css">
+</style>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+<script src="../js/artDialog.js?skin=default"></script>	
+<script src="../js/iframeTools.js"></script>
+<script src="../js/jquery-1.8.3.min.js"></script>
+</head>
+<body>
+	<div id="login_center">
+<div id="login_area">
+    <div id="login_boder"> 
+    <form id='query' action='../jump.php' method='post'>
+    <div id='login_tip' style='text-align: center;'> {corp} MAC/ip地址在线查询系统
+    <span id='login_err' class='sty_txt2' ></span> </div>
+    <div style='text-align: center;'><input type='text' name='search' class='username' id='search'></div><br />
+    <div style='text-align: center;'>
+	<select name="search_fs" id="search_fs" class="select">
+        <option value="mac" selected="selected">MAC-address</option>
+		<option value="ip" >ip-address</option>
+    </select>
+    </div><br />
+    <div style='text-align: center;'>
+    <input name="button" type="submit" class="submit" id="button" value="搜一下" /></div>
+    </form> 
+    </div>
+		<div id="glass" class="glass" style="margin:0 auto;border:0px solid #000;width:400px;height:200px;display:none">
+	</br> <div id="USERMAC" style="margin-left: 20px;" > </div>
+	</br> <div id="MACqianzui" style="margin-left: 20px;"> </div>
+	</br> <div id="REGKEYWORD" style="margin-left: 20px;"> </div>
+	</div> 
+	<p style="text-align: center; " >{bottom}<br /></p>
+	</div>
+</body>
+</html>
+<script>
+$("#login_boder").bind("keydown", function(e) {
+    var theEvent = e || window.event;
+    var code = theEvent.keyCode || theEvent.which || theEvent.charCode;
+    if (code == 13) {
+        $(".submit").click()
+    }
+});
+$(function() {
+    $(".submit").on('click', function(event) {
+        event.preventDefault();
+        var search = $('#search').val();
+		var search_fs = $('#search_fs').val();
+        if (search == '') {
+            SystemBox(3, '待搜索的内容为空！');
+            return false
+        }
+        $.ajax({
+            url: 'search.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                searchdata: search,
+				searchfs: search_fs
+            },
+            beforeSend: function() {
+                $('#button').attr("value", '正在搜索...')
+            },
+            success: function(res) {
+                var errcode = res.status;
+                var errmessage = res.message;
+                if (res.status == 0) {
+					$("#USERMAC").text(" 查询MAC地址：" + res.mac)
+					$("#MACqianzui").text(" MAC地址前缀：" + res.mac_q)
+					$("#REGKEYWORD").text(" 注册公司：" + res.regcompy)
+					//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+					$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block')
+					$('#button').attr("value", '搜一下')					
+                } else if(res.status == 1) {
+					$("#USERMAC").text(" 启始IP：" + res.Data.beginIP)
+					$("#MACqianzui").text(" 结束IP：" + res.Data.endIP)
+					$("#REGKEYWORD").text(" 归属地：" + res.Data.dataA + res.Data.dataB)
+					//$("#COMPADDR").text(" 公司地址：" + res.compaddr)
+					$('#glass').attr("style", 'margin:0 auto;border:0px solid #000;width:400px;height:200px;display:block')
+					$('#button').attr("value", '搜一下')	
+
+                } else {
+					SystemBox(3, errmessage);
+                    $('#button').attr("value", '搜一下')
+				}
+            }
+        })
+    })
+});	
+</script>

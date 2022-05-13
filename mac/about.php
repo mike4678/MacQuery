@@ -29,4 +29,13 @@ $row_num = $dou->num_rows($dou -> query($sql));
         </div>
     </div>    
 </div>
+</body></html>m/mike4678/MacQuery" target="_blank">GitHub</a>)</td></tr>
+					<tr><td align="right">错误提交：</td><td><a href="http://bbs.csource.com.cn" target="_blank">点击提交</a></td><td align="right"></td><td></td></tr>
+                </table>
+            </div>
+        </div>
+		            </div>
+        </div>
+    </div>    
+</div>
 </body></html>

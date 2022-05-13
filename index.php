@@ -50,4 +50,24 @@ if($dou -> Info("index_status") == 1 ) //网站状态检查
 			}
 
 	}
+?>ist]."}";
+						$HeadData = $dou -> Info($out[1][$tlist]);
+						$fh = str_ireplace($name,$HeadData,$fh);	
+						$tlist = $tlist + 1;
+	
+					} 
+					//生成结束
+					$PageData = $fh;
+					echo $PageData;
+					//header('Location: '. $dou -> Info("index_page")); //返回页面不存在
+					//exit;
+				}
+		} else 
+			{
+				
+				echo $dou -> Index_ErrorPage(301);
+
+			}
+
+	}
 ?>
