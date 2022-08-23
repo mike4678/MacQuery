@@ -1,4 +1,6 @@
 # MacQuery
+最新整合版本已发布，名称为SearchCenter，当前版本已废弃
+
 Write By PHP Be based on SourceGeneralSystem
 
 基于PHP的一个MAC地址/IP地址查询
